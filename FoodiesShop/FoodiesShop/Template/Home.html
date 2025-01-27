@@ -1,0 +1,54 @@
+{% extends "main.html" %} 
+
+{% block between_nf %}
+{% load static %}
+ <!--slidebar-->
+
+ <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="10000">
+        <img src="{% static './images/food1.jpg' %}" class="d-block w-100" alt="A thali full of different types of food" style="height: 500px;width: 200px;">
+      </div>
+      <div class="carousel-item" data-bs-interval="2000">
+        <img src="{% static './images/food2.jpg' %}" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="{% static './images/food3.jpg' %}" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!--offers-->
+  <div style="background-color:blueviolet; width: 100%; height: 45px;text-align: center;font-weight:700;">offers vaid till 30th dec</div>
+
+  <!--Cards-->
+  <div class="row">
+    {% for item in Food %}
+    <div class="col-md-4 mb-4 d-flex justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ item.images.url }}" class="card-img-top" alt="{{ item.name }}" />
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }} - {{ item.category }}</h5>
+                <p class="card-text">Cost: ₹{{ item.cost }}</p>
+                <a href="{% url 'product' id=item.id %}" class="btn btn-primary">View Product</a>
+                <a href="{% url 'addWish' id=item.id %}" class="btn btn-primary">+ Wishlist</a>
+                <a href="{% url 'addCart' id=item.id %}" class="btn btn-primary">+ Add to Cart</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+
+
+{% endblock %}

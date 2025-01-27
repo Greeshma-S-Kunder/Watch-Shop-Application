@@ -1,0 +1,86 @@
+{% extends "main.html" %}
+{% block between_nf %}
+
+<style>
+.container {
+    max-width: 600px;
+    background-color: #becff8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.col-md-6 h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.col-md-6 p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column;
+    }
+
+    .col-md-6 {
+        margin-bottom: 20px;
+    }
+}
+</style>
+
+{% if view_products %}
+    {% for item in view_products %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ item.product.images.url }}" alt="IMAGE" class="img-fluid product-img" />
+            </div>
+            <div class="col-md-6">
+                <h3>{{ item.product.name }}</h3>
+                <h3>Rs. {{ item.product.cost }}</h3>
+                <p>{{ item.product.category }}</p>
+                
+                <form action="{% url 'removewish' item.product.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Your Wishlist is empty</p>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends "main.html" %}
+{% block between_nf %}
+
+<style>
+  .container {
+    max-width: 600px;
+    background-color: #becff8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .container:hover {
+    transform: scale(1.02);
+  }
+
+  .product-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .col-md-6 h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+  }
+
+  .col-md-6 p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .quantity-control button {
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 5px;
+  }
+
+  .quantity-control button:hover {
+    background-color: #e9ecef;
+  }
+
+  .quantity-control input {
+    width: 50px;
+    text-align: center;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  @media (max-width: 768px) {
+    .row {
+      flex-direction: column;
+    }
+
+    .col-md-6 {
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+{% if user_products %}
+    {% for item in user_products %}
+        <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+            <img
+                src="{{ item.product.images.url }}"
+                alt="IMAGE"
+                class="img-fluid product-img"
+            />
+            </div>
+            <div class="col-md-6">
+            <h3>{{ item.product.name }}</h3>
+            <h3>Quantity: {{ item.cart_count }}</h3>
+            <p>{{ item.product.category }}</p>
+
+            <div class="quantity-control">
+                <button class="btn btn-outline-secondary" id="decrementbtn">-</button>
+                <input type="number" class="form-control text-center" value="{{ item.cart_count }}" min="1" id="inputbtn">
+                <button class="btn btn-outline-secondary" id="incrementbtn">+</button>
+            </div>
+
+            <form action="{% url 'removecart' item.product.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Remove</button>
+            </form>
+            </div>
+        </div>
+        </div>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", function(){
+            const decrementBtn = document.getElementById("decrementbtn");
+            const incrementBtn = document.getElementById("incrementbtn");
+            const inputBtn = document.getElementById("inputbtn");
+
+            decrementBtn.addEventListener("click", function(){
+                updateQunatity(-1);
+            });
+
+            incrementBtn.addEventListener("click", function(){
+                updateQunatity(1);
+            });
+
+            function updateQunatity(change){
+              let currentValue = parseInt(inputBtn.value);
+              let newValue = currentValue + change;
+              if(newValue < 1){
+                newValue = 1;
+              }
+              inputBtn.value = newValue;
+            }
+          });
+        </script>
+
+    {% endfor %}
+{% else %}
+    <p>Your Cart is empty</p>
+{% endif %}
+{% endblock %}

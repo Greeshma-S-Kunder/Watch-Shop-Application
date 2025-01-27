@@ -1,0 +1,113 @@
+{% extends "main.html" %} 
+{% block between_nf %}
+<style>
+    .product-container {
+        margin-top: 50px;
+        padding: 20px;
+        background: linear-gradient(to bottom, #ffffff, #f1f1f1);
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .product-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        border-bottom: 2px solid #e6e6e6;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .product-image {
+        max-width: 45%;
+        border-radius: 8px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-details {
+        max-width: 50%;
+        padding: 20px;
+        color: #333;
+    }
+
+    .product-details h2 {
+        font-size: 2em;
+        color: #ff6347; /* Tomato color for emphasis */
+        margin-bottom: 15px;
+    }
+
+    .product-details h3 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    .product-details p {
+        font-size: 1.1em;
+        color: #555;
+    }
+
+    .reviews-section {
+        margin-top: 20px;
+    }
+
+    .review-item {
+        background: #ffffff;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .review-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .review-item p {
+        margin: 5px 0;
+        color: #444;
+    }
+
+    .review-item .rating {
+        font-size: 1.2em;
+        color: #ffa500; /* Orange for rating stars */
+    }
+
+    .no-reviews {
+        font-size: 1.1em;
+        color: #888;
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="container product-container">
+    <!-- Product Header -->
+    <div class="product-header">
+        <img src="{{ product.images.url }}" alt="IMAGE" class="product-image" />
+        <div class="product-details">
+            <h2>{{ product.name }}</h2>
+            <h3>Cost: ₹{{ product.cost }}</h3>
+            <p>Category: {{ product.category }}</p>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="reviews-section">
+        <h3>Customer Reviews</h3>
+        {% if review_obj.exists %}
+        {% for review in review_obj %}
+        <div class="review-item">
+            <p class="rating">⭐ {{ review.rating }}/5</p>
+            <p>{{ review.review_text }}</p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="no-reviews">No reviews available for this product.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Api</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  
+</head>
+<body>
+  <h1>This is the api interface</h1>
+  <button id="api-button">Call API</button>
+  <h1 id="name_section"></h1>
+  <script>
+   /*  document.getElementById("api-button").addEventListener("click", function(){
+      fetch('dummy')
+      .then((response)=>response.json())
+      .then((data)=>{
+          console.log(data)
+        
+          let element=document.getElementById("name_section")
+          element.innerHTML=data["data"];
+      })
+      .then((error)=>{
+        console.log("Error:", error);
+      })
+
+    }) */
+  
+
+  $.ajax({
+    url:"dummy?parameter1=food3",
+    method:'GET',
+    dataType:'json',
+    success:function(data){
+      console.log(data)
+      let element=document.getElementById("name_section")
+      if(element){
+        element.innerHTML=data["FoodName"]?data["FoodName"]:"No food found"
+      }
+    },
+    error:function(xhr,status, error){
+      console.error("Ajax Error", error)
+    }
+  })
+</script>
+</body>
+</html>
